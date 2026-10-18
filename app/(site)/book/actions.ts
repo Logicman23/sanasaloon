@@ -10,8 +10,10 @@ import {
   type BookingState,
   type BookingValues,
 } from "@/lib/booking";
+import { after } from "next/server";
 import { displayPrice } from "@/lib/format";
 import { getActiveServices } from "@/lib/services";
+import { sendBookingEmail } from "@/utils/email/booking";
 import { createPublicClient, SupabaseConfigError } from "@/utils/supabase/server";
 
 const FALLBACK_MESSAGE =
@@ -93,15 +95,16 @@ export async function createBooking(_prev: BookingState, formData: FormData): Pr
     return fail(FALLBACK_MESSAGE);
   }
 
-  return {
-    status: "success",
-    booking: {
-      serviceName: service.name,
-      priceLabel: displayPrice(service),
-      date: values.date,
-      time: values.time,
-      name: values.name,
-      phone,
-    },
+  const booking = {
+    serviceName: service.name,
+    priceLabel: displayPrice(service),
+    date: values.date,
+    time: values.time,
+    name: values.name,
+    phone,
   };
+  // Notify the salon after the response is sent, so the visitor isn't kept waiting on the email.
+  after(() => sendBookingEmail({ ...booking, notes: values.notes }));
+
+  return { status: "success", booking };
 }

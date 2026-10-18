@@ -25,6 +25,8 @@ export const SITE = {
   phoneDisplay: "0321 1467008",
   whatsapp: "+923211467008",
   whatsappDisplay: "0321 1467008",
+  // Every online booking is emailed to these addresses (see utils/email/booking.ts).
+  bookingNotifyEmails: ["upwork344@gmail.com"],
   timeZone: "Asia/Karachi",
   // TODO: confirm real opening hours. Times are 24h "HH:MM"; booking slots run from open until 30 min before close.
   hours: { open: "11:00", close: "20:00", label: "Open daily, 11:00 AM – 8:00 PM" },

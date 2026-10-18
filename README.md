@@ -17,6 +17,7 @@ npm run dev
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API | Public site reads and staff sign-in |
 | `SUPABASE_SERVICE_ROLE_KEY` | Same page (secret) | Server-only. The POS uses it to save sales |
 | `ADMIN_OVERRIDE_PIN` | You choose (6+ digits) | Manager PIN required for any POS discount |
+| `BOOKING_EMAIL_USER`, `BOOKING_EMAIL_APP_PASSWORD` | A Gmail address and its [App Password](https://myaccount.google.com/apppasswords) | Emails every online booking to `bookingNotifyEmails` in `lib/site.ts` |
 
 ### Database
 
