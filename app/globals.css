@@ -34,3 +34,28 @@ body {
   background: var(--color-plum-200);
   color: var(--color-plum-900);
 }
+
+/* POS receipts: print only the receipt, sized for an 80mm thermal printer or A4. */
+@media print {
+  @page {
+    margin: 8mm;
+  }
+  body * {
+    visibility: hidden;
+  }
+  #receipt,
+  #receipt * {
+    visibility: visible;
+  }
+  #receipt {
+    position: fixed;
+    inset: 0 auto auto 0;
+    width: 72mm;
+    border: 0;
+    padding: 0;
+    color: #000;
+  }
+  dialog::backdrop {
+    background: transparent;
+  }
+}

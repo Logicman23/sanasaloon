@@ -3,7 +3,7 @@
 import { CalendarCheck, CalendarHeart, CircleAlert, LoaderCircle, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useActionState, useState, type ReactNode } from "react";
-import { createBooking } from "@/app/book/actions";
+import { createBooking } from "@/app/(site)/book/actions";
 import {
   addDays,
   BOOKING_WINDOW_DAYS,
