@@ -16,9 +16,11 @@ export const SITE = {
   googleReviewUrl: "https://g.page/r/CdaD2CwLw3ziEBM/review",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Nadeem+Center+Satellite+Town+Rawalpindi",
-  // TODO: add the salon's phone and WhatsApp numbers (international format, e.g. "+923001234567").
+  // TODO: add the salon's phone number (international format, e.g. "+923001234567").
   phone: "",
-  whatsapp: "",
+  whatsapp: "+923211467008",
+  // Local format shown on the page.
+  whatsappDisplay: "0321 1467008",
   timeZone: "Asia/Karachi",
   // TODO: confirm real opening hours. Times are 24h "HH:MM"; booking slots run from open until 30 min before close.
   hours: { open: "11:00", close: "20:00", label: "Open daily, 11:00 AM – 8:00 PM" },

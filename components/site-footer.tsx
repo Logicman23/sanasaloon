@@ -1,10 +1,12 @@
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 import { GoogleReviewBadge } from "@/components/google-review-badge";
 import { SocialLinks } from "@/components/social-links";
-import { FULL_ADDRESS, NAV_LINKS, SITE } from "@/lib/site";
+import { FULL_ADDRESS, NAV_LINKS, SITE, whatsappLink } from "@/lib/site";
 
 export function SiteFooter() {
+  const whatsapp = whatsappLink();
+
   return (
     <footer className="bg-plum-950 text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
@@ -45,6 +47,17 @@ export function SiteFooter() {
               <a href={`tel:${SITE.phone}`} className="flex gap-2 transition-colors hover:text-white">
                 <Phone className="mt-0.5 size-4 shrink-0 text-gold-400" />
                 {SITE.phone}
+              </a>
+            )}
+            {whatsapp && (
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex gap-2 transition-colors hover:text-white"
+              >
+                <MessageCircle className="mt-0.5 size-4 shrink-0 text-gold-400" />
+                WhatsApp: {SITE.whatsappDisplay}
               </a>
             )}
           </address>

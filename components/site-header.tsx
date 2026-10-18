@@ -1,14 +1,15 @@
 "use client";
 
-import { CalendarHeart, LockKeyhole, Menu, X } from "lucide-react";
+import { CalendarHeart, LockKeyhole, Menu, MessageCircle, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { NAV_LINKS, SITE } from "@/lib/site";
+import { NAV_LINKS, SITE, whatsappLink } from "@/lib/site";
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const whatsapp = whatsappLink();
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
   // "Book Appointment" is shown as the CTA button, so keep it out of the plain link list on desktop.
@@ -45,6 +46,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
+          {whatsapp && (
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`WhatsApp ${SITE.whatsappDisplay}`}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-plum-800 transition-colors hover:bg-plum-50"
+            >
+              <MessageCircle className="size-4" />
+              <span className="hidden xl:inline">{SITE.whatsappDisplay}</span>
+            </a>
+          )}
           <Link
             href="/pos"
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink/60 transition-colors hover:text-plum-800"
@@ -61,16 +74,30 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="inline-flex size-11 items-center justify-center rounded-full text-plum-800 hover:bg-plum-50 lg:hidden"
-        >
-          {open ? <X className="size-6" /> : <Menu className="size-6" />}
-        </button>
+        <div className="flex items-center gap-1 lg:hidden">
+          {whatsapp && (
+            <a
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`WhatsApp ${SITE.whatsappDisplay}`}
+              className="inline-flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-medium text-plum-800 hover:bg-plum-50"
+            >
+              <MessageCircle className="size-5" />
+              <span className="hidden sm:inline">{SITE.whatsappDisplay}</span>
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="inline-flex size-11 items-center justify-center rounded-full text-plum-800 hover:bg-plum-50"
+          >
+            {open ? <X className="size-6" /> : <Menu className="size-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -90,7 +117,21 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
-            <li className="mt-2 border-t border-plum-100 pt-3">
+            {whatsapp && (
+              <li className="mt-2 border-t border-plum-100 pt-3">
+                <a
+                  href={whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-xl px-4 py-3 font-medium text-plum-800 hover:bg-plum-50"
+                >
+                  <MessageCircle className="size-5" />
+                  WhatsApp {SITE.whatsappDisplay}
+                </a>
+              </li>
+            )}
+            <li className={whatsapp ? "" : "mt-2 border-t border-plum-100 pt-3"}>
               <Link href="/pos" onClick={() => setOpen(false)} className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm text-ink/60 hover:bg-plum-50">
                 <LockKeyhole className="size-4" />
                 Staff POS Login
