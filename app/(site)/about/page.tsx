@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { ArrowRight, CalendarHeart, Gem, HeartHandshake, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryCard } from "@/components/category-card";
 import { GoogleReviewBadge } from "@/components/google-review-badge";
+import { Photo } from "@/components/photo";
+import { ABOUT_IMAGE } from "@/lib/images";
 import { CATEGORY_ORDER, FULL_ADDRESS, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -85,7 +87,14 @@ export default function AboutPage() {
         </div>
 
         <div className="relative mx-auto w-full max-w-sm">
-          <div className="aspect-[4/5] rounded-[10rem_10rem_2rem_2rem] bg-gradient-to-b from-plum-800 to-plum-950 p-10 text-white">
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[10rem_10rem_2rem_2rem] bg-gradient-to-b from-plum-800 to-plum-950 p-10 text-white">
+            <Photo
+              src={ABOUT_IMAGE}
+              alt={`Inside ${SITE.name}`}
+              fill
+              sizes="(min-width: 640px) 384px, 100vw"
+              className="z-10 object-cover"
+            />
             <div className="flex h-full flex-col items-center justify-center text-center">
               <p className="font-display text-5xl font-semibold">{SITE.shortName}</p>
               <p className="mt-2 text-xs tracking-[0.35em] text-gold-400 uppercase">Beauty Saloon</p>
@@ -121,18 +130,7 @@ export default function AboutPage() {
         <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CATEGORY_ORDER.map((category) => (
             <li key={category}>
-              <Link
-                href={`/services?category=${encodeURIComponent(category)}`}
-                className="group flex h-full flex-col rounded-3xl border border-plum-100 bg-white p-7 transition hover:border-plum-300 hover:shadow-md"
-              >
-                <CategoryIcon category={category} className="size-7 text-plum-700" />
-                <h3 className="mt-4 font-display text-xl font-semibold text-ink">{category}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/65">{EXPERTISE[category]}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-plum-700">
-                  See prices
-                  <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden="true" />
-                </span>
-              </Link>
+              <CategoryCard category={category} text={EXPERTISE[category]} linkLabel="See prices" as="h3" />
             </li>
           ))}
         </ul>

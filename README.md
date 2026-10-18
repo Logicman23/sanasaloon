@@ -66,6 +66,10 @@ Only active rows in `staff` can open `/pos`. To revoke access, set `is_active = 
   - requires `ADMIN_OVERRIDE_PIN` for any discount, compared in constant time, with a lockout after 5 wrong attempts in 15 minutes per staff member. Every attempt is logged in `discount_override_attempts`;
   - saves the order and its items in one transaction (`create_pos_order`).
 
+## Website photos
+
+Add photos to `public/images/` with the exact file names listed in `public/images/README.txt` (3 hero slides, 5 category cards, 1 About photo), then commit and push. A spot with no photo yet shows the plain design. The file names are set in `lib/images.ts`.
+
 ## Where things live
 
 - `lib/site.ts`: business details, hours, phone/WhatsApp, social links and nav. Edit this first.

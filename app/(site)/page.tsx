@@ -1,10 +1,22 @@
-import { ArrowRight, CalendarHeart, Gem, HeartHandshake, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  BadgePercent,
+  CalendarHeart,
+  Crown,
+  Gem,
+  HeartHandshake,
+  MapPin,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-import { CategoryIcon } from "@/components/category-icon";
+import { CategoryCard } from "@/components/category-card";
 import { GoogleReviewBadge } from "@/components/google-review-badge";
+import { HeroSlider, type HeroSlide } from "@/components/hero-slider";
 import { ServiceCard, ServiceCardSkeleton, ServicesError } from "@/components/service-card";
 import { SocialLinks } from "@/components/social-links";
+import { HERO_IMAGES } from "@/lib/images";
 import { getActiveServices, pickFeatured } from "@/lib/services";
 import { CATEGORY_ORDER, FULL_ADDRESS, SITE } from "@/lib/site";
 
@@ -20,6 +32,98 @@ const PROMISES = [
   { Icon: Gem, title: "Premium Products", text: "Trusted professional brands for makeup, hair and skin." },
   { Icon: ShieldCheck, title: "Hygiene First", text: "Sanitised tools and fresh disposables for every client." },
   { Icon: HeartHandshake, title: "Personal Attention", text: "Experienced stylists who take time to understand your look." },
+];
+
+const PRIMARY_CTA =
+  "inline-flex items-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 font-semibold text-plum-950 shadow-lg shadow-gold-500/20 transition hover:bg-gold-300";
+const SECONDARY_CTA =
+  "inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 font-semibold transition hover:bg-white/10";
+const EYEBROW =
+  "inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-white/5 px-4 py-1.5 text-sm text-gold-300";
+const SLIDE_HEADING = "mt-6 font-display text-4xl leading-[1.05] font-semibold sm:text-6xl lg:text-7xl";
+const SLIDE_TEXT = "mt-6 max-w-xl text-lg leading-relaxed text-white/75 sm:text-xl";
+
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    image: HERO_IMAGES[0],
+    content: (
+      <>
+        <a
+          href={SITE.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${EYEBROW} transition hover:bg-white/10`}
+        >
+          <MapPin className="size-4" />
+          {SITE.address.area}, {SITE.address.city}
+        </a>
+        <h1 className={SLIDE_HEADING}>
+          Sana&apos;s <span className="text-gold-400 italic">Beauty</span> Saloon
+        </h1>
+        <p className={SLIDE_TEXT}>{SITE.tagline}</p>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link href="/services" className={PRIMARY_CTA}>
+            <Sparkles className="size-5" />
+            Explore Services
+          </Link>
+          <Link href="/book" className={SECONDARY_CTA}>
+            <CalendarHeart className="size-5" />
+            Book Now
+          </Link>
+        </div>
+      </>
+    ),
+  },
+  {
+    image: HERO_IMAGES[1],
+    content: (
+      <>
+        <p className={EYEBROW}>
+          <Crown className="size-4" />
+          Bridal Season
+        </p>
+        <h2 className={SLIDE_HEADING}>
+          Your <span className="text-gold-400 italic">wedding</span> look, perfected
+        </h2>
+        <p className={SLIDE_TEXT}>Barat, Mehndi &amp; Walima looks with complete pre-bridal grooming.</p>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link href="/deals" className={PRIMARY_CTA}>
+            <BadgePercent className="size-5" />
+            View Bridal Deals
+          </Link>
+          <Link href="/book" className={SECONDARY_CTA}>
+            <CalendarHeart className="size-5" />
+            Book a Trial
+          </Link>
+        </div>
+      </>
+    ),
+  },
+  {
+    image: HERO_IMAGES[2],
+    content: (
+      <>
+        <p className={EYEBROW}>
+          <Sparkles className="size-4" />
+          Hair &amp; Skin
+        </p>
+        <h2 className={SLIDE_HEADING}>
+          Healthy hair, <span className="text-gold-400 italic">glowing</span> skin
+        </h2>
+        <p className={SLIDE_TEXT}>Keratin treatments, HydraFacials and expert care for everyday confidence.</p>
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link href="/services" className={PRIMARY_CTA}>
+            <Sparkles className="size-5" />
+            See Prices
+          </Link>
+          <Link href="/book" className={SECONDARY_CTA}>
+            <CalendarHeart className="size-5" />
+            Book Now
+          </Link>
+        </div>
+      </>
+    ),
+  },
 ];
 
 const jsonLd = {
@@ -48,85 +152,14 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-plum-950 text-white">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(216,181,111,0.25),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(142,74,120,0.45),transparent_60%)]"
-        />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:px-8">
-          <div>
-            <a
-              href={SITE.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-gold-400/40 bg-white/5 px-4 py-1.5 text-sm text-gold-300 transition hover:bg-white/10"
-            >
-              <MapPin className="size-4" />
-              {SITE.address.area}, {SITE.address.city}
-            </a>
-            <h1 className="mt-6 font-display text-5xl leading-[1.05] font-semibold sm:text-6xl lg:text-7xl">
-              Sana&apos;s <span className="text-gold-400 italic">Beauty</span> Saloon
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75 sm:text-xl">{SITE.tagline}</p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/services"
-                className="inline-flex items-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 font-semibold text-plum-950 shadow-lg shadow-gold-500/20 transition hover:bg-gold-300"
-              >
-                <Sparkles className="size-5" />
-                Explore Services
-              </Link>
-              <Link
-                href="/book"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 px-7 py-3.5 font-semibold transition hover:bg-white/10"
-              >
-                <CalendarHeart className="size-5" />
-                Book Now
-              </Link>
-            </div>
-          </div>
-
-          <div className="hidden lg:block">
-            <div className="relative mx-auto aspect-[4/5] max-w-sm rounded-[10rem_10rem_2rem_2rem] border border-gold-400/30 bg-gradient-to-b from-plum-700/60 to-plum-900/40 p-10">
-              <div className="flex h-full flex-col items-center justify-center text-center">
-                <CategoryIcon category="Bridal & Makeup" className="size-12 text-gold-400" />
-                <p className="mt-6 font-display text-3xl">Bridal Season</p>
-                <p className="mt-3 text-sm text-white/70">
-                  Barat, Mehndi &amp; Walima looks with complete pre-bridal grooming.
-                </p>
-                <Link
-                  href="/deals"
-                  className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-300 hover:text-gold-400"
-                >
-                  View bridal packages
-                  <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider slides={HERO_SLIDES} />
 
       {/* Category highlights */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CATEGORY_ORDER.map((category) => (
             <li key={category}>
-              <Link
-                href={`/services?category=${encodeURIComponent(category)}`}
-                className="group flex h-full flex-col rounded-3xl border border-plum-100 bg-white p-7 transition hover:border-plum-300 hover:shadow-md"
-              >
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-plum-50 text-plum-700 transition group-hover:bg-plum-800 group-hover:text-white">
-                  <CategoryIcon category={category} className="size-6" />
-                </span>
-                <h2 className="mt-5 font-display text-xl font-semibold text-ink">{category}</h2>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/65">{CATEGORY_BLURBS[category]}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-plum-700">
-                  Explore
-                  <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-                </span>
-              </Link>
+              <CategoryCard category={category} text={CATEGORY_BLURBS[category]} linkLabel="Explore" />
             </li>
           ))}
         </ul>
