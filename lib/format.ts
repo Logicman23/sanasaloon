@@ -13,6 +13,13 @@ export function displayPrice(service: Pick<Service, "price" | "price_display">):
   return "Price on consultation";
 }
 
+/** "14:30" -> "2:30 PM" */
+export function formatTime12h(hhmm: string): string {
+  const [h, m] = hhmm.split(":").map(Number);
+  const suffix = h >= 12 ? "PM" : "AM";
+  return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${suffix}`;
+}
+
 export function formatDuration(minutes: number | null): string | null {
   if (!minutes || minutes <= 0) return null;
   const h = Math.floor(minutes / 60);

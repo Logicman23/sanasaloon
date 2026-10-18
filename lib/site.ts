@@ -19,6 +19,9 @@ export const SITE = {
   // TODO: add the salon's phone and WhatsApp numbers (international format, e.g. "+923001234567").
   phone: "",
   whatsapp: "",
+  timeZone: "Asia/Karachi",
+  // TODO: confirm real opening hours. Times are 24h "HH:MM"; booking slots run from open until 30 min before close.
+  hours: { open: "11:00", close: "20:00", label: "Open daily, 11:00 AM – 8:00 PM" },
   // TODO: replace with the salon's real profile URLs. Empty links render as "coming soon".
   social: {
     instagram: "",
@@ -28,6 +31,13 @@ export const SITE = {
 } as const;
 
 export const FULL_ADDRESS = `${SITE.address.line1}, ${SITE.address.area}, ${SITE.address.city}`;
+
+/** wa.me link for the salon's WhatsApp, or null when no number is configured. */
+export function whatsappLink(message?: string): string | null {
+  const digits = SITE.whatsapp.replace(/\D/g, "");
+  if (!digits) return null;
+  return `https://wa.me/${digits}${message ? `?text=${encodeURIComponent(message)}` : ""}`;
+}
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
