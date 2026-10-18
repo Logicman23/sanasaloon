@@ -28,4 +28,6 @@ Replace them with the salon's own photos any time, using the same file names.
   categories/skincare-facials.jpg  Rosa Rafael      unsplash.com/photos/Pe9IXUuC6QU
   categories/nails.jpg             Giorgio Trovato  unsplash.com/photos/gb6gtiTZKB8
   categories/spa-body.jpg          Unsplash         unsplash.com/photos/W7AyAs7azHc
-  about/salon.jpg                  Guilherme Petri  unsplash.com/photos/PtOfbGkU3uI
+
+salon/                 About page "Visit our salon" gallery (any shape)
+  The photos shown, and their order, are listed in lib/images.ts (SALON_GALLERY).

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CategoryCard } from "@/components/category-card";
 import { GoogleReviewBadge } from "@/components/google-review-badge";
 import { Photo } from "@/components/photo";
-import { ABOUT_IMAGE } from "@/lib/images";
+import { ABOUT_IMAGE, SALON_GALLERY } from "@/lib/images";
 import { CATEGORY_ORDER, FULL_ADDRESS, SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -136,7 +136,49 @@ export default function AboutPage() {
         </ul>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.3em] text-gold-600 uppercase">Inside the salon</p>
+              <h2 className="mt-2 font-display text-3xl font-semibold text-plum-900">Visit our salon</h2>
+              <p className="mt-2 max-w-xl text-ink/65">
+                A clean, comfortable space on the ground floor of {SITE.address.line1}, {SITE.address.area}.
+              </p>
+            </div>
+            <a
+              href={SITE.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center gap-2 rounded-full border border-plum-200 px-5 py-2.5 text-sm font-semibold text-plum-800 transition hover:bg-plum-50"
+            >
+              <MapPin className="size-4" aria-hidden="true" />
+              Get directions
+            </a>
+          </div>
+          {/* The first photo spans two columns and two rows; the rest fill the grid around it. */}
+          <ul className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+            {SALON_GALLERY.map((photo, i) => (
+              <li
+                key={photo.src}
+                className={`relative overflow-hidden rounded-2xl bg-plum-50 ${
+                  i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"
+                }`}
+              >
+                <Photo
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"}
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pt-16 pb-20 sm:px-6 lg:px-8">
         <div className="flex flex-col items-start justify-between gap-6 rounded-3xl bg-plum-900 p-8 text-white sm:p-10 lg:flex-row lg:items-center">
           <div>
             <h2 className="font-display text-2xl font-semibold sm:text-3xl">Come visit us</h2>
