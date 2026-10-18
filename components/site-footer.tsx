@@ -46,7 +46,7 @@ export function SiteFooter() {
             {SITE.phone && (
               <a href={`tel:${SITE.phone}`} className="flex gap-2 transition-colors hover:text-white">
                 <Phone className="mt-0.5 size-4 shrink-0 text-gold-400" />
-                {SITE.phone}
+                Call: {SITE.phoneDisplay}
               </a>
             )}
             {whatsapp && (

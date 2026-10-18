@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { CalendarHeart, MessageCircle } from "lucide-react";
+import { BadgePercent, CalendarHeart, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ServiceCardSkeleton, ServicesError } from "@/components/service-card";
 import { ServicesBrowser } from "@/components/services-browser";
-import { getActiveServices, getCategories } from "@/lib/services";
+import { getActiveServices, getCategories, splitDeals } from "@/lib/services";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Services & Deals",
+  title: "Services",
   description:
     "Bridal makeup and grooming packages, keratin and hair treatments, HydraFacials and skincare at Sana's Beauty Saloon, Satellite Town, Rawalpindi. View prices and book online.",
 };
@@ -20,12 +20,19 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.3em] text-gold-600 uppercase">Menu &amp; Pricing</p>
           <h1 className="mt-3 max-w-3xl font-display text-4xl font-semibold text-plum-900 sm:text-5xl">
-            Services &amp; Deals
+            Our Services
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-ink/70">
             From complete bridal grooming to advanced facials and hair treatments, explore everything we offer at{" "}
             {SITE.name}. Prices may vary with hair length, skin needs and products chosen.
           </p>
+          <Link
+            href="/deals"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold-400 bg-white px-5 py-2.5 text-sm font-semibold text-plum-800 transition hover:bg-gold-300/30"
+          >
+            <BadgePercent className="size-4 text-gold-600" aria-hidden="true" />
+            See our current deals
+          </Link>
         </div>
       </section>
 
@@ -69,7 +76,8 @@ async function ServicesList() {
   const result = await getActiveServices();
   if (!result.ok) return <ServicesError message={result.error} />;
 
-  return <ServicesBrowser services={result.services} categories={getCategories(result.services)} />;
+  const { regular } = splitDeals(result.services);
+  return <ServicesBrowser services={regular} categories={getCategories(regular)} />;
 }
 
 function ServicesGridFallback() {

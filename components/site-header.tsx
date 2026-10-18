@@ -18,7 +18,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-plum-100/70 bg-cream/90 backdrop-blur">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex flex-col leading-none" aria-label={`${SITE.name} home`}>
+        <Link href="/" className="flex shrink-0 flex-col leading-none whitespace-nowrap" aria-label={`${SITE.name} home`}>
           <span className="font-display text-2xl font-semibold text-plum-800">{SITE.shortName}</span>
           <span className="text-[0.65rem] font-medium tracking-[0.3em] text-gold-600 uppercase">
             Beauty Saloon
@@ -32,7 +32,7 @@ export function SiteHeader() {
                 <Link
                   href={link.href}
                   aria-current={isActive(link.href) ? "page" : undefined}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors xl:px-4 ${
                     isActive(link.href)
                       ? "bg-plum-100 text-plum-800"
                       : "text-ink/75 hover:bg-plum-50 hover:text-plum-800"
@@ -60,14 +60,15 @@ export function SiteHeader() {
           )}
           <Link
             href="/pos"
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-ink/60 transition-colors hover:text-plum-800"
+            aria-label="POS Login"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-ink/60 transition-colors hover:text-plum-800"
           >
             <LockKeyhole className="size-4" />
-            POS Login
+            <span className="hidden xl:inline">POS Login</span>
           </Link>
           <Link
             href="/book"
-            className="inline-flex items-center gap-2 rounded-full bg-plum-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-plum-900"
+            className="inline-flex items-center gap-2 rounded-full bg-plum-800 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-sm transition hover:bg-plum-900"
           >
             <CalendarHeart className="size-4" />
             Book Appointment

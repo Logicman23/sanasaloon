@@ -11,7 +11,7 @@ export function ContactButtons({ message }: { message?: string }) {
       {SITE.phone ? (
         <a href={`tel:${SITE.phone}`} className={`${base} bg-plum-800 text-white hover:bg-plum-900`}>
           <Phone className="size-5" aria-hidden="true" />
-          Call {SITE.phone}
+          Call {SITE.phoneDisplay}
         </a>
       ) : (
         <span className={`${base} cursor-not-allowed bg-plum-100 text-plum-800/60`} title="Phone number coming soon">

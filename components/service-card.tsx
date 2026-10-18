@@ -2,11 +2,12 @@ import { ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
 import { CategoryIcon } from "@/components/category-icon";
 import { displayPrice, formatDuration } from "@/lib/format";
+import { isDeal } from "@/lib/site";
 import type { Service } from "@/lib/types";
 
 export function ServiceCard({ service }: { service: Service }) {
   const duration = formatDuration(service.duration_minutes);
-  const isBridal = service.category === "Bridal & Packages";
+  const isBridal = service.category === "Bridal & Packages" || isDeal(service);
 
   return (
     <article

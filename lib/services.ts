@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { CATEGORY_ORDER } from "@/lib/site";
+import { CATEGORY_ORDER, DEALS_CATEGORY, isDeal } from "@/lib/site";
 import type { Service, ServicesResult } from "@/lib/types";
 import { createPublicClient, SupabaseConfigError } from "@/utils/supabase/server";
 
@@ -40,13 +40,19 @@ export async function getActiveServices(): Promise<ServicesResult> {
   }
 }
 
+/** Splits the catalog into the Deals page items and the Services page items. */
+export function splitDeals(services: Service[]): { deals: Service[]; regular: Service[] } {
+  return { deals: services.filter(isDeal), regular: services.filter((s) => !isDeal(s)) };
+}
+
 /**
- * Up to `limit` services for the home page: bridal packages first, then the
+ * Up to `limit` services for the home page: deals and bridal packages first, then the
  * top item from each remaining category so every category is represented.
  */
 export function pickFeatured(services: Service[], limit = 6): Service[] {
-  const bridal = services.filter((s) => s.category === CATEGORY_ORDER[0]);
-  const rest = services.filter((s) => s.category !== CATEGORY_ORDER[0]);
+  const isPriority = (s: Service) => isDeal(s) || s.category === CATEGORY_ORDER[0];
+  const bridal = [...services.filter(isDeal), ...services.filter((s) => s.category === CATEGORY_ORDER[0])];
+  const rest = services.filter((s) => !isPriority(s));
 
   const firstPerCategory: Service[] = [];
   const seen = new Set<string>();
@@ -64,17 +70,20 @@ export function pickFeatured(services: Service[], limit = 6): Service[] {
   return [...picked, ...filler].slice(0, limit);
 }
 
+// Deals lead wherever every category is listed together (booking form, POS).
+const DISPLAY_ORDER: readonly string[] = [DEALS_CATEGORY, ...CATEGORY_ORDER];
+
 export function getCategories(services: Service[]): string[] {
   const present = new Set(services.map((s) => s.category));
-  const known = CATEGORY_ORDER.filter((c) => present.has(c));
-  const extra = [...present].filter((c) => !(CATEGORY_ORDER as readonly string[]).includes(c)).sort();
+  const known = DISPLAY_ORDER.filter((c) => present.has(c));
+  const extra = [...present].filter((c) => !DISPLAY_ORDER.includes(c)).sort();
   return [...known, ...extra];
 }
 
 function sortByCategory(services: Service[]): Service[] {
   const rank = (category: string) => {
-    const i = (CATEGORY_ORDER as readonly string[]).indexOf(category);
-    return i === -1 ? CATEGORY_ORDER.length : i;
+    const i = DISPLAY_ORDER.indexOf(category);
+    return i === -1 ? DISPLAY_ORDER.length : i;
   };
   // Array.prototype.sort is stable, so the price ordering from the query is kept within each category.
   return [...services].sort((a, b) => rank(a.category) - rank(b.category));

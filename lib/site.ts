@@ -20,10 +20,10 @@ export const SITE = {
   // Google Maps listing ID (cid) of the salon's Business Profile, resolved from googleReviewUrl.
   mapsCid: "16320133602448278486",
   mapsUrl: "https://maps.google.com/?cid=16320133602448278486",
-  // TODO: add the salon's phone number (international format, e.g. "+923001234567").
-  phone: "",
+  // International format for tel:/wa.me links; the *Display values are what the page shows.
+  phone: "+923211467008",
+  phoneDisplay: "0321 1467008",
   whatsapp: "+923211467008",
-  // Local format shown on the page.
   whatsappDisplay: "0321 1467008",
   timeZone: "Asia/Karachi",
   // TODO: confirm real opening hours. Times are 24h "HH:MM"; booking slots run from open until 30 min before close.
@@ -48,13 +48,19 @@ export function whatsappLink(message?: string): string | null {
 
 export const NAV_LINKS = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Services & Deals" },
+  { href: "/services", label: "Services" },
+  { href: "/deals", label: "Deals" },
   { href: "/about", label: "About Us" },
   { href: "/contact", label: "Contact" },
   { href: "/book", label: "Book Appointment" },
 ] as const;
 
-// Display order for known categories. Unknown categories from the database are appended after these.
+// Items whose category is exactly this are listed on the Deals page instead of Services.
+export const DEALS_CATEGORY = "Deals";
+
+export const isDeal = (service: { category: string }) => service.category === DEALS_CATEGORY;
+
+// Display order for known service categories. Unknown categories from the database are appended after these.
 export const CATEGORY_ORDER = [
   "Bridal & Packages",
   "Hair Treatments",

@@ -32,6 +32,8 @@ npm run dev
 
 3. **POS.** Run `supabase/migrations/20261018010000_create_pos.sql`. It creates `staff`, `orders`, `order_items`, `discount_override_attempts` and the `create_pos_order` function.
 
+4. **Deals.** Run `supabase/migrations/20261018020000_deals_category.sql`. Any active service with category `Deals` is shown on the website's Deals page (and the POS Deals tab). Every other active service is shown on the Services page.
+
 ### Adding POS staff
 
 1. In Supabase → Authentication → Users, **Add user** with an email and password.
@@ -63,5 +65,5 @@ Only active rows in `staff` can open `/pos`. To revoke access, set `is_active = 
 - `lib/pos/`: POS pricing (shared by the screen and the server), staff auth and the manager PIN check.
 - `utils/supabase/`: `server.ts` (public, cookie-less), `session.ts` (staff session), `admin.ts` (service role, server-only).
 - `proxy.ts`: refreshes staff sessions on `/pos` routes.
-- `app/(site)/`: public website (Home, Services, About, Book, Contact).
+- `app/(site)/`: public website (Home, Services, Deals, About, Book, Contact).
 - `app/pos/`: staff login and checkout.

@@ -598,7 +598,7 @@ function ReceiptDialog({ receipt, onClose }: { receipt: Receipt | null; onClose:
             <div className="text-center">
               <p className="font-display text-xl font-semibold">{SITE.name}</p>
               <p className="text-xs text-ink/60">{FULL_ADDRESS}</p>
-              {SITE.phone && <p className="text-xs text-ink/60">{SITE.phone}</p>}
+              {SITE.phone && <p className="text-xs text-ink/60">{SITE.phoneDisplay}</p>}
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-y-1 border-y border-dashed border-plum-200 py-3 text-xs">
               <dt className="text-ink/55">Invoice</dt>
