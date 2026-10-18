@@ -9,9 +9,11 @@ import { getActiveServices, pickFeatured } from "@/lib/services";
 import { CATEGORY_ORDER, FULL_ADDRESS, SITE } from "@/lib/site";
 
 const CATEGORY_BLURBS: Record<(typeof CATEGORY_ORDER)[number], string> = {
-  "Bridal & Packages": "Complete bridal makeup, mehndi and walima looks with full grooming packages.",
-  "Hair Treatments": "Keratin, protein and smoothing treatments, cuts, colour and styling.",
-  "Skincare & Facials": "7-step HydraFacials, whitening and deep-cleansing facials for glowing skin.",
+  "Bridal & Makeup": "Bridal, engagement, mehndi and party makeup with hair styling.",
+  "Hair Treatments": "Keratin and smoothing treatments, cuts, colour and styling.",
+  "Skincare & Facials": "HydraFacials, whitening and glow facials, threading and waxing.",
+  Nails: "Manicures, spa pedicures, gel extensions and nail art.",
+  "Spa & Body": "Relaxing body massages, polishes and scrubs.",
 };
 
 const PROMISES = [
@@ -88,13 +90,13 @@ export default function HomePage() {
           <div className="hidden lg:block">
             <div className="relative mx-auto aspect-[4/5] max-w-sm rounded-[10rem_10rem_2rem_2rem] border border-gold-400/30 bg-gradient-to-b from-plum-700/60 to-plum-900/40 p-10">
               <div className="flex h-full flex-col items-center justify-center text-center">
-                <CategoryIcon category="Bridal & Packages" className="size-12 text-gold-400" />
+                <CategoryIcon category="Bridal & Makeup" className="size-12 text-gold-400" />
                 <p className="mt-6 font-display text-3xl">Bridal Season</p>
                 <p className="mt-3 text-sm text-white/70">
                   Barat, Mehndi &amp; Walima looks with complete pre-bridal grooming.
                 </p>
                 <Link
-                  href="/services?category=Bridal+%26+Packages"
+                  href="/deals"
                   className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-300 hover:text-gold-400"
                 >
                   View bridal packages
@@ -108,7 +110,7 @@ export default function HomePage() {
 
       {/* Category highlights */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <ul className="grid gap-5 md:grid-cols-3">
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CATEGORY_ORDER.map((category) => (
             <li key={category}>
               <Link

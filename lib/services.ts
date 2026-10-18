@@ -1,20 +1,111 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { CATEGORY_ORDER, DEALS_CATEGORY, isDeal } from "@/lib/site";
 import type { Service, ServicesResult } from "@/lib/types";
+import { posMenuDb } from "@/utils/pos-menu/db";
 import { createPublicClient, SupabaseConfigError } from "@/utils/supabase/server";
 
 const SERVICE_COLUMNS =
   "id, name, category, price, price_display, description, duration_minutes, is_active";
 
+// The POS stores categories as an enum; these are the names shown on the website.
+const POS_CATEGORY_LABELS: Record<string, string> = {
+  MAKEUP: "Bridal & Makeup",
+  HAIR: "Hair Treatments",
+  SKIN: "Skincare & Facials",
+  NAILS: "Nails",
+  SPA: "Spa & Body",
+};
+
 /**
- * All active services, cached for a few minutes. Call `revalidateTag("services")`
- * (e.g. from the POS/admin after editing prices) to refresh immediately.
+ * The public menu (website pages and booking form), cached for a few minutes.
+ * Reads the POS app's services and packages when MENU_DATABASE_URL is set, otherwise
+ * this site's own Supabase `services` table. Call `revalidateTag("services")` to refresh.
  */
 export async function getActiveServices(): Promise<ServicesResult> {
   "use cache";
-  cacheLife("minutes");
   cacheTag("services");
 
+  const result = posMenuDb() ? await getPosMenu() : await loadWebsiteServices();
+  if (result.ok) cacheLife("minutes");
+  // Refresh a failed load after 30s. Expiry stays at 5 min, the shortest that can still be prerendered.
+  else cacheLife({ stale: 30, revalidate: 30, expire: 300 });
+  return result;
+}
+
+/** Active services and packages from the POS app. Packages are listed as Deals. */
+async function getPosMenu(): Promise<ServicesResult> {
+  try {
+    return await queryPosMenu();
+  } catch (err) {
+    // The pooler closes idle connections; one retry opens a fresh one.
+    console.warn("[services] POS menu query failed, retrying:", err instanceof Error ? err.message : err);
+    try {
+      return await queryPosMenu();
+    } catch (retryErr) {
+      console.error("[services] POS menu query failed:", retryErr instanceof Error ? retryErr.message : retryErr);
+      return { ok: false, error: "We couldn't load our services right now." };
+    }
+  }
+}
+
+async function queryPosMenu(): Promise<ServicesResult> {
+  const sql = posMenuDb()!;
+  const [services, packages] = await Promise.all([
+    sql<{ id: string; title: string; category: string; duration_mins: number; price: number; description: string | null }[]>`
+      select id, title, category::text as category, duration_mins, price::float8 as price, description
+      from services
+      where active and archived_at is null
+      order by price desc`,
+    sql<{ id: string; name: string; description: string | null; price: number; includes: string[] | null }[]>`
+      select p.id, p.name, p.description, p.price::float8 as price,
+             array_agg(s.title order by s.title) filter (where s.id is not null) as includes
+      from service_packages p
+      left join package_services ps on ps.package_id = p.id
+      left join services s on s.id = ps.service_id and s.active and s.archived_at is null
+      where p.active and p.archived_at is null
+      group by p.id
+      order by p.price desc`,
+  ]);
+
+  const menu: Service[] = [
+    ...packages.map((p) => ({
+      id: p.id,
+      name: p.name,
+      category: DEALS_CATEGORY,
+      price: p.price,
+      price_display: null,
+      description: p.description?.trim() || (p.includes?.length ? `Includes ${p.includes.join(", ")}.` : null),
+      // Packages can span several visits, so a summed duration would mislead.
+      duration_minutes: null,
+      is_active: true,
+    })),
+    ...services.map((s) => ({
+      id: s.id,
+      name: s.title,
+      category: POS_CATEGORY_LABELS[s.category] ?? s.category,
+      price: s.price,
+      price_display: null,
+      description: s.description,
+      duration_minutes: s.duration_mins,
+      is_active: true,
+    })),
+  ];
+  return { ok: true, source: "pos", services: sortByCategory(menu) };
+}
+
+/** This site's own Supabase `services` table. The website's /pos checkout always uses this one. */
+export async function getWebsiteServices(): Promise<ServicesResult> {
+  "use cache";
+  cacheTag("services");
+
+  const result = await loadWebsiteServices();
+  if (result.ok) cacheLife("minutes");
+  // Refresh a failed load after 30s. Expiry stays at 5 min, the shortest that can still be prerendered.
+  else cacheLife({ stale: 30, revalidate: 30, expire: 300 });
+  return result;
+}
+
+async function loadWebsiteServices(): Promise<ServicesResult> {
   try {
     const supabase = createPublicClient();
     const { data, error } = await supabase
@@ -29,7 +120,7 @@ export async function getActiveServices(): Promise<ServicesResult> {
       return { ok: false, error: "We couldn't load our services right now." };
     }
 
-    return { ok: true, services: sortByCategory((data ?? []) as Service[]) };
+    return { ok: true, source: "website", services: sortByCategory((data ?? []) as Service[]) };
   } catch (err) {
     if (err instanceof SupabaseConfigError) {
       console.error(`[services] ${err.message}`);

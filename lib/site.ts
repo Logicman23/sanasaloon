@@ -61,8 +61,11 @@ export const DEALS_CATEGORY = "Deals";
 export const isDeal = (service: { category: string }) => service.category === DEALS_CATEGORY;
 
 // Display order for known service categories. Unknown categories from the database are appended after these.
+// Names match the POS categories as mapped in lib/services.ts.
 export const CATEGORY_ORDER = [
-  "Bridal & Packages",
+  "Bridal & Makeup",
   "Hair Treatments",
   "Skincare & Facials",
+  "Nails",
+  "Spa & Body",
 ] as const;

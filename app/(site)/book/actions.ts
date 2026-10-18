@@ -70,7 +70,8 @@ export async function createBooking(_prev: BookingState, formData: FormData): Pr
   try {
     const supabase = createPublicClient();
     const { error } = await supabase.from("appointments").insert({
-      service_id: service.id,
+      // POS-sourced ids aren't rows in this database; the name and price snapshot still record the choice.
+      service_id: servicesResult.source === "website" ? service.id : null,
       service_name: service.name,
       price_display: displayPrice(service),
       customer_name: values.name,

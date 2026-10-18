@@ -8,7 +8,7 @@ import { signOut } from "@/app/pos/actions";
 import { PosTerminal, type TodaySale } from "@/components/pos/pos-terminal";
 import { salonNow } from "@/lib/booking";
 import { getStaff, type StaffMember } from "@/lib/pos/auth";
-import { getActiveServices, getCategories } from "@/lib/services";
+import { getCategories, getWebsiteServices } from "@/lib/services";
 import { SITE } from "@/lib/site";
 import { createSessionClient } from "@/utils/supabase/session";
 
@@ -43,7 +43,7 @@ async function PosGate() {
     );
   }
 
-  const [servicesResult, todaySales] = await Promise.all([getActiveServices(), getTodaySales()]);
+  const [servicesResult, todaySales] = await Promise.all([getWebsiteServices(), getTodaySales()]);
   if (!servicesResult.ok) {
     return <PosMessage title="Services unavailable" body={servicesResult.error} showSignOut />;
   }

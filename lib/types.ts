@@ -11,5 +11,6 @@ export type Service = {
 };
 
 export type ServicesResult =
-  | { ok: true; services: Service[] }
+  /** "pos": read from the POS app's database; "website": this site's own `services` table. */
+  | { ok: true; source: "pos" | "website"; services: Service[] }
   | { ok: false; error: string };

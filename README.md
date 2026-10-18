@@ -34,6 +34,15 @@ npm run dev
 
 4. **Deals.** Run `supabase/migrations/20261018020000_deals_category.sql`. Any active service with category `Deals` is shown on the website's Deals page (and the POS Deals tab). Every other active service is shown on the Services page.
 
+### Menu from the POS app
+
+The salon's main POS ([Logicman23/saloon](https://github.com/Logicman23/saloon)) owns the real menu. When `MENU_DATABASE_URL` is set, the website's Services page, Deals page, home page and booking form read it directly: POS **services** appear under Services, and POS **packages** appear under Deals. Anything staff add, pause, or archive in the POS shows up on the website within a few minutes.
+
+1. In the **POS** Supabase project's SQL editor, set a password in `supabase/pos/website-menu-reader.sql` and run it. It creates `website_menu`, a login that can only read active services and packages (not clients, invoices or users) and cannot write.
+2. In Vercel, add `MENU_DATABASE_URL` (server-only) with that login's transaction-pooler URL, as shown in `.env.local.example`, then redeploy.
+
+Without `MENU_DATABASE_URL` the site uses this project's own `services` table. The website's staff `/pos` checkout always uses its own table.
+
 ### Adding POS staff
 
 1. In Supabase → Authentication → Users, **Add user** with an email and password.

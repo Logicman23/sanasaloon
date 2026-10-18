@@ -40,10 +40,12 @@ const VALUES = [
 ];
 
 const EXPERTISE: Record<(typeof CATEGORY_ORDER)[number], string> = {
-  "Bridal & Packages":
+  "Bridal & Makeup":
     "Barat, mehndi and walima looks with hairstyling, dupatta setting and pre-bridal grooming packages.",
   "Hair Treatments": "Keratin and smoothing treatments, cuts, colour and styling for healthy, manageable hair.",
-  "Skincare & Facials": "Advanced facials including the 7-step HydraFacial for deep cleansing and lasting glow.",
+  "Skincare & Facials": "Advanced facials including the HydraFacial for deep cleansing and lasting glow.",
+  Nails: "Classic manicures, spa pedicures, gel extensions and freehand nail art.",
+  "Spa & Body": "Aromatherapy massages and full-body polishes to relax and renew.",
 };
 
 export default function AboutPage() {
@@ -116,7 +118,7 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h2 className="font-display text-3xl font-semibold text-plum-900">Our expertise</h2>
-        <ul className="mt-10 grid gap-6 md:grid-cols-3">
+        <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CATEGORY_ORDER.map((category) => (
             <li key={category}>
               <Link
