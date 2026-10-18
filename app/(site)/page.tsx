@@ -105,12 +105,12 @@ const HERO_SLIDES: HeroSlide[] = [
       <>
         <p className={EYEBROW}>
           <Sparkles className="size-4" />
-          Hair &amp; Skin
+          Party &amp; Bridal
         </p>
         <h2 className={SLIDE_HEADING}>
-          Healthy hair, <span className="text-gold-400 italic">glowing</span> skin
+          Makeup for every <span className="text-gold-400 italic">occasion</span>
         </h2>
-        <p className={SLIDE_TEXT}>Keratin treatments, HydraFacials and expert care for everyday confidence.</p>
+        <p className={SLIDE_TEXT}>Engagement, mehndi, party and everyday looks by our expert makeup artists.</p>
         <div className="mt-10 flex flex-wrap gap-4">
           <Link href="/services" className={PRIMARY_CTA}>
             <Sparkles className="size-5" />
