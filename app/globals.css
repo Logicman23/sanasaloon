@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-heading), ui-serif, Georgia, serif;
+
+  /* Brand palette: deep plum, blush rose, warm gold on cream */
+  --color-plum-50: #faf5f8;
+  --color-plum-100: #f3e7ef;
+  --color-plum-200: #e6cfdf;
+  --color-plum-300: #d1a9c4;
+  --color-plum-500: #8e4a78;
+  --color-plum-700: #5c2650;
+  --color-plum-800: #4a1d40;
+  --color-plum-900: #331430;
+  --color-plum-950: #1f0b1d;
+
+  --color-rose-blush: #f6e3e6;
+  --color-gold-300: #e6cf9a;
+  --color-gold-400: #d8b56f;
+  --color-gold-500: #c49a4a;
+  --color-gold-600: #a67d33;
+
+  --color-cream: #fbf7f3;
+  --color-ink: #2a1a26;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-plum-200);
+  color: var(--color-plum-900);
+}
