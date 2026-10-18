@@ -11,9 +11,8 @@ export const metadata: Metadata = {
   description: `Visit ${SITE.name} at ${FULL_ADDRESS}. Call, WhatsApp or get directions.`,
 };
 
-const MAP_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(
-  `${SITE.address.line1}, ${SITE.address.area}, ${SITE.address.city}, ${SITE.address.country}`,
-)}&z=16&output=embed`;
+// Embeds the salon's own Google listing (pin, address and rating) rather than an address search.
+const MAP_EMBED_URL = `https://maps.google.com/maps?cid=${SITE.mapsCid}&output=embed`;
 
 export default function ContactPage() {
   return (

@@ -17,8 +17,9 @@ export const SITE = {
     country: "Pakistan",
   },
   googleReviewUrl: "https://g.page/r/CdaD2CwLw3ziEBM/review",
-  mapsUrl:
-    "https://www.google.com/maps/search/?api=1&query=Nadeem+Center+Satellite+Town+Rawalpindi",
+  // Google Maps listing ID (cid) of the salon's Business Profile, resolved from googleReviewUrl.
+  mapsCid: "16320133602448278486",
+  mapsUrl: "https://maps.google.com/?cid=16320133602448278486",
   // TODO: add the salon's phone number (international format, e.g. "+923001234567").
   phone: "",
   whatsapp: "+923211467008",
