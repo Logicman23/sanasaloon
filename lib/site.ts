@@ -8,9 +8,12 @@ export const SITE = {
   description:
     "Sana's Beauty Saloon in Satellite Town, Rawalpindi offers bridal makeup and grooming packages, hair treatments, and advanced skincare including HydraFacials.",
   address: {
+    unit: "Ground Floor",
     line1: "Nadeem Center",
+    block: "B-Block",
     area: "Satellite Town",
     city: "Rawalpindi",
+    postalCode: "46000",
     country: "Pakistan",
   },
   googleReviewUrl: "https://g.page/r/CdaD2CwLw3ziEBM/review",
@@ -32,7 +35,8 @@ export const SITE = {
   },
 } as const;
 
-export const FULL_ADDRESS = `${SITE.address.line1}, ${SITE.address.area}, ${SITE.address.city}`;
+const { unit, line1, block, area, city, postalCode, country } = SITE.address;
+export const FULL_ADDRESS = `${unit}, ${line1}, ${block}, ${area}, ${city} ${postalCode}, ${country}`;
 
 /** wa.me link for the salon's WhatsApp, or null when no number is configured. */
 export function whatsappLink(message?: string): string | null {

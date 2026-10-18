@@ -28,8 +28,9 @@ const jsonLd = {
   description: SITE.description,
   address: {
     "@type": "PostalAddress",
-    streetAddress: `${SITE.address.line1}, ${SITE.address.area}`,
+    streetAddress: `${SITE.address.unit}, ${SITE.address.line1}, ${SITE.address.block}, ${SITE.address.area}`,
     addressLocality: SITE.address.city,
+    postalCode: SITE.address.postalCode,
     addressCountry: "PK",
   },
   ...(SITE.phone ? { telephone: SITE.phone } : {}),

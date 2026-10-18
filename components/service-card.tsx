@@ -32,10 +32,11 @@ export function ServiceCard({ service }: { service: Service }) {
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-ink/65">{service.description}</p>
       )}
 
-      <div className="mt-auto flex items-end justify-between gap-4 pt-6">
+      {/* Wraps so long prices ("Rs. 15,000 – 25,000") stay on one line and push Book below on narrow cards. */}
+      <div className="mt-auto flex flex-wrap items-end justify-between gap-x-4 gap-y-3 pt-6">
         <div>
           <p className="text-[0.65rem] font-semibold tracking-[0.2em] text-ink/45 uppercase">Price</p>
-          <p className="font-display text-2xl font-semibold text-plum-800">{displayPrice(service)}</p>
+          <p className="font-display text-2xl font-semibold whitespace-nowrap text-plum-800">{displayPrice(service)}</p>
         </div>
         <Link
           href={`/book?service=${encodeURIComponent(service.id)}`}

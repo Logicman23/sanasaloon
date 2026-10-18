@@ -38,11 +38,11 @@ export default function ContactPage() {
               <div>
                 <h2 className="font-display text-2xl font-semibold text-ink">{SITE.name}</h2>
                 <address className="mt-2 leading-relaxed text-ink/70 not-italic">
-                  {SITE.address.line1}
+                  {SITE.address.unit}, {SITE.address.line1}
                   <br />
-                  {SITE.address.area}, {SITE.address.city}
+                  {SITE.address.block}, {SITE.address.area}
                   <br />
-                  {SITE.address.country}
+                  {SITE.address.city} {SITE.address.postalCode}, {SITE.address.country}
                 </address>
               </div>
             </div>
